@@ -1,6 +1,6 @@
 {
     "_comment": "Build with `packer build -var-file=winxp.json windows.json`",
-    "vm_name": "winxp.qcow2",
+    "vm_name": "winxp",
     "headless": "true",
     "cpus": "1",
     "memory": "512",
