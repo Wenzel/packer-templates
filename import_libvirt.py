@@ -5,9 +5,10 @@ Usage:
   import_libvirt.py [options] <qemu_image>
 
 Options:
-  -h --help         Show this screen.
-  --qemu=<path>     Path to custom QEMU binary
-  --open-vnc        Open VNC on all interfaces (0.0.0.0)
+  -h --help                 Show this screen.
+  -q=PATH, --qemu=PATH      Path to custom QEMU binary
+  --open-vnc                Open VNC on all interfaces (0.0.0.0)
+  -u=URI, --uri=URI         Specify libvirt's URI [default: qemu:///system]
 """
 
 import os
@@ -45,11 +46,9 @@ def main(args):
     logging.basicConfig(level=logging.DEBUG, format='%(message)s')
     qemu_image = args['<qemu_image>']
     open_vnc = args['--open-vnc']
-    # check root
-    if os.geteuid() != 0:
-        logging.critical('Must be root to run this script')
-        sys.exit(1)
-    con = libvirt.open('qemu:///system')
+    libvirt_uri = args['--uri']
+    
+    con = libvirt.open(libvirt_uri)
     script_dir = os.path.dirname(os.path.realpath(__file__))
     storage_path = os.path.join(script_dir, '..', 'images')
     # check for storage pool nitro
