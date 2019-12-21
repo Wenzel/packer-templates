@@ -9,6 +9,7 @@ Options:
   -q=PATH, --qemu=PATH      Path to custom QEMU binary
   --open-vnc                Open VNC on all interfaces (0.0.0.0)
   -u=URI, --uri=URI         Specify libvirt's URI [default: qemu:///system]
+  -p=POOL, --pool=POOL      Specify pool name [default: default]
 """
 
 import os
@@ -20,7 +21,6 @@ import xml.etree.ElementTree as tree
 import libvirt
 from docopt import docopt
 
-NITRO_POOL_NAME = 'nitro'
 PACKER_OUTPUT_DIR = 'output-qemu'
 SNAPSHOT_XML = """
 <domainsnapshot>
@@ -47,21 +47,22 @@ def main(args):
     qemu_image = args['<qemu_image>']
     open_vnc = args['--open-vnc']
     libvirt_uri = args['--uri']
-    
+    pool_name = args['--pool']
+
     con = libvirt.open(libvirt_uri)
     script_dir = os.path.dirname(os.path.realpath(__file__))
     storage_path = os.path.join(script_dir, '..', 'images')
-    # check for storage pool nitro
+    # check for storage pool
     try:
-        storage = con.storagePoolLookupByName(NITRO_POOL_NAME)
+        storage = con.storagePoolLookupByName(pool_name)
     except libvirt.libvirtError:
-        # build nitro pool xml
+        # build pool xml
         path_elem = tree.Element('path')
         path_elem.text = storage_path
         target_elem = tree.Element('target')
         target_elem.append(path_elem)
         name_elem = tree.Element('name')
-        name_elem.text = NITRO_POOL_NAME
+        name_elem.text = pool_name
         pool_elem = tree.Element('pool', attrib={'type': 'dir'})
         pool_elem.append(name_elem)
         pool_elem.append(target_elem)
