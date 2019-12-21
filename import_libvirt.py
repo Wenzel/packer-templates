@@ -5,11 +5,12 @@ Usage:
   import_libvirt.py [options] <qemu_image>
 
 Options:
-  -h --help                 Show this screen.
-  -q=PATH, --qemu=PATH      Path to custom QEMU binary
-  --open-vnc                Open VNC on all interfaces (0.0.0.0)
-  -u=URI, --uri=URI         Specify libvirt's URI [default: qemu:///system]
-  -p=POOL, --pool=POOL      Specify pool name [default: default]
+  -h --help                     Show this screen.
+  -q=PATH, --qemu=PATH          Path to custom QEMU binary
+  --open-vnc                    Open VNC on all interfaces (0.0.0.0)
+  -u=URI, --uri=URI             Specify libvirt's URI [default: qemu:///system]
+  -p=POOL, --pool=POOL          Specify pool name [default: default]
+  -k=PREFIX, --prefix=PREFIX    Specify VM prefix
 """
 
 import os
@@ -48,6 +49,9 @@ def main(args):
     open_vnc = args['--open-vnc']
     libvirt_uri = args['--uri']
     pool_name = args['--pool']
+    prefix = args['--prefix']
+    if not prefix:
+        prefix = ""
 
     con = libvirt.open(libvirt_uri)
     script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -77,7 +81,7 @@ def main(args):
         storage.create()
     # check if domain is already defined
     image_name = os.path.basename(qemu_image)
-    domain_name = 'nitro_{}'.format(image_name)
+    domain_name = '{}_{}'.format(prefix, image_name)
     try:
         domain = con.lookupByName(domain_name)
     except libvirt.libvirtError:
@@ -86,7 +90,7 @@ def main(args):
         # set custom qemu if needed
         if args['--qemu']:
             qemu_bin_path = args['--qemu']
-        # move image to nitro pool
+        # move image to our pool
         nitro_image_path = os.path.join(storage_path, '{}.qcow2'.format(image_name))
         shutil.move(qemu_image, nitro_image_path)
         domain_xml = prepare_domain_xml(domain_name, qemu_bin_path, nitro_image_path,
