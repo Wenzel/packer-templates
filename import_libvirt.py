@@ -102,7 +102,7 @@ def main(args):
         domain.snapshotCreateXML(SNAPSHOT_XML)
         # remove output-qemu
         output_qemu_path = os.path.join(script_dir, PACKER_OUTPUT_DIR)
-        shutil.rmtree(output_qemu_path)
+        shutil.rmtree(output_qemu_path, ignore_errors=True)
     else:
         logging.info('Domain {} already defined'.format(domain_name))
 
