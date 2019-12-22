@@ -11,6 +11,7 @@ Options:
   -u=URI, --uri=URI             Specify libvirt's URI [default: qemu:///system]
   -p=POOL, --pool=POOL          Specify pool name [default: default]
   -k=PREFIX, --prefix=PREFIX    Specify VM prefix
+  -m=PATH, --pool-path=PATH     Specify pool path
 """
 
 import os
@@ -50,12 +51,15 @@ def main(args):
     libvirt_uri = args['--uri']
     pool_name = args['--pool']
     prefix = args['--prefix']
+    pool_path = args['--pool-path']
     if not prefix:
         prefix = ""
 
     con = libvirt.open(libvirt_uri)
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    storage_path = os.path.join(script_dir, '..', 'images')
+    storage_path = pool_path
+    if not pool_path:
+        storage_path = os.path.join(script_dir, '..', 'images')
     # check for storage pool
     try:
         storage = con.storagePoolLookupByName(pool_name)
