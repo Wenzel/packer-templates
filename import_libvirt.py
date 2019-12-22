@@ -81,7 +81,7 @@ def main(args):
         storage.create()
     # check if domain is already defined
     image_name = os.path.basename(qemu_image)
-    domain_name = '{}_{}'.format(prefix, image_name)
+    domain_name = '{}{}'.format(prefix, image_name)
     try:
         domain = con.lookupByName(domain_name)
     except libvirt.libvirtError:
