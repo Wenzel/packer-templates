@@ -80,7 +80,7 @@ def main(args):
     if not storage.isActive():
         storage.create()
     # check if domain is already defined
-    image_name = os.path.basename(qemu_image)
+    image_name = os.path.splitext(os.path.basename(qemu_image))[0]
     domain_name = '{}{}'.format(prefix, image_name)
     try:
         domain = con.lookupByName(domain_name)
