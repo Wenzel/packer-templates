@@ -10,6 +10,7 @@ Options:
   --open-vnc                    Open VNC on all interfaces (0.0.0.0)
   -u=URI, --uri=URI             Specify libvirt's URI [default: qemu:///system]
   -p=POOL, --pool=POOL          Specify pool name [default: default]
+  -b=TYPE, --domain-type=TYPE   Specify domain type [default: kvm]
   -k=PREFIX, --prefix=PREFIX    Specify VM prefix
   -m=PATH, --pool-path=PATH     Specify pool path
 """
@@ -30,10 +31,10 @@ SNAPSHOT_XML = """
 </domainsnapshot>
 """
 
-def prepare_domain_xml(domain_name, qemu_bin_path, nitro_image_path, open_vnc):
+def prepare_domain_xml(domain_name, domain_type, qemu_bin_path, nitro_image_path, open_vnc):
     with open('template_domain.xml') as templ:
         domain_xml = templ.read()
-        domain_xml = domain_xml.format(domain_name, qemu_bin_path,
+        domain_xml = domain_xml.format(domain_type, domain_name, qemu_bin_path,
                                        nitro_image_path)
         root = tree.fromstring(domain_xml)
         if open_vnc:
@@ -51,6 +52,7 @@ def main(args):
     libvirt_uri = args['--uri']
     pool_name = args['--pool']
     prefix = args['--prefix']
+    domain_type = args['--domain-type']
     pool_path = args['--pool-path']
     if not prefix:
         prefix = ""
@@ -97,7 +99,7 @@ def main(args):
         # move image to our pool
         nitro_image_path = os.path.join(storage_path, '{}.qcow2'.format(image_name))
         shutil.move(qemu_image, nitro_image_path)
-        domain_xml = prepare_domain_xml(domain_name, qemu_bin_path, nitro_image_path,
+        domain_xml = prepare_domain_xml(domain_name, domain_type, qemu_bin_path, nitro_image_path,
                                         open_vnc)
         con.defineXML(domain_xml)
         logging.info('Domain {} defined.'.format(domain_name))

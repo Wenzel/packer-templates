@@ -1,4 +1,4 @@
-<domain type='qemu'>
+<domain type='{}'>
   <name>{}</name>
   <memory unit='MB'>1500</memory>
   <vcpu placement='static'>1</vcpu>
