@@ -4,7 +4,7 @@
         {
             "type": "qemu",
             "accelerator": "kvm",
-            "vm_name": "{{user `vm_name`}}",
+            "vm_name": "{{user `vm_name`}}.qcow2",
             "format": "qcow2",
             "cpus": "{{ user `cpus` }}",
             "memory": "{{ user `memory` }}",
