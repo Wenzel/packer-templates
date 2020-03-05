@@ -66,6 +66,10 @@
                 "scripts/setup_winrm.bat",
                 "scripts/fixnetwork.ps1",
                 "scripts/setup_winrm_public.bat"
+            ],
+            "vboxmanage": [
+              ["modifyvm", "win10", "--acpi", "on"],
+              "{{ user `vboxmanage_cmds` }}"
             ]
         }
     ],
