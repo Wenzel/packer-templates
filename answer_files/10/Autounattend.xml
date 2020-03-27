@@ -94,6 +94,7 @@
                 <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
                 <NetworkLocation>Home</NetworkLocation>
                 <ProtectYourPC>1</ProtectYourPC>
+                <SkipMachineOOBE>true</SkipMachineOOBE>
             </OOBE>
             <AutoLogon>
                 <Password>
