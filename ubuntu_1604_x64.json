@@ -3,9 +3,9 @@
   "vm_name": "ubuntu1604",
   "cpus": "1",
   "disk_size": "65536",
-  "iso_checksum": "f3532991e031cae75bcf5e695afb844dd278fff9",
+  "iso_checksum": "70db69379816b91eb01559212ae474a36ecec9ef",
   "iso_checksum_type": "sha1",
-  "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
+  "iso_url": "http://old-releases.ubuntu.com/releases/xenial/ubuntu-16.04-server-amd64.iso",
   "memory": "512",
   "preseed" : "preseed.cfg",
   "version" : "1"
