@@ -6,7 +6,7 @@
       "boot_wait": "5s",
       "communicator": "winrm",
       "cpus": "{{ user `cpus` }}",
-      "disk_compression": true,
+      "disk_compression": false,
       "disk_interface": "ide",
       "disk_size": "{{user `disk_size`}}",
       "floppy_files": [
